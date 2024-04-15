@@ -27,7 +27,7 @@ while True:
     print('\tВыйти из программы - "4"')
     print('-----------------------------------------------')
     choice = input('Введите команду: ').strip()
-    match(choice):
+    match(choice):  
         case '1':
             console()
         case '2':

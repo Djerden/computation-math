@@ -6,14 +6,15 @@ def generate_random_matrix(n):
     vector = [float(random.randint(1, 10)) for _ in range(n)]
     
     for i in range(n):
-        # Генерируем сумму для недиагональных элементов, умножаем на 2 для гарантии диагонального преобладания
-        sum_non_diag = sum(abs(float(random.randint(-10, 10))) for _ in range(n - 1))
-        # Задаем диагональный элемент
-        matrix[i][i] = sum_non_diag + float(random.randint(1, 10))
-        indices = list(range(n))
-        indices.remove(i)  # Исключаем диагональный элемент
-        for j in indices:
-            matrix[i][j] = float(random.randint(-10, 10))
-    
+        # Сначала заполним недиагональные элементы и вычислим их сумму модулей
+        sum_non_diag = 0
+        for j in range(n):
+            if i != j:
+                matrix[i][j] = float(random.randint(-10, 10))
+                sum_non_diag += abs(matrix[i][j])
+
+        # Устанавливаем диагональный элемент так, чтобы он гарантированно был больше суммы модулей недиагональных
+        matrix[i][i] = sum_non_diag + random.uniform(1.0, 10)  # Увеличиваем значение на случайную величину для гарантии преобладания
+
     return matrix, vector
 

@@ -13,9 +13,13 @@ def console_input():
     while True:
         try:    
             eps = float(input('Введите точность (epsilon): ').replace(',', '.'))
+            if eps < 0 or eps > 1:
+                raise Exception('Значение точности должно быть в пределе от 0 до 1')
             break
         except ValueError:
             print('Введено некорректное значение для точности. Попробуйте еще раз')
+        except Exception as e:
+            print(f'{e}. Попробуйте еще раз')
 
     while True: 
         try:
@@ -42,6 +46,8 @@ def console_input():
                 break 
             except ValueError as e:
                 print('Ошибка формата ввода', {e}, 'Попробуйте ввести эту же строку еще раз')
+            except IndexError as e:
+                print('Ошибка формата ввода', {e}, 'Попробуйте ввести эту же строку еще раз')
     return matrix, vector, eps
 
 # Ввод из файла
@@ -62,6 +68,8 @@ def file_input():
         eps = 0
         with open(path, mode='r', encoding="UTF-8") as file:
             eps = float(file.readline().strip())
+            if eps < 0 or eps > 1:
+                raise Exception('Значение точности должно быть в пределе от 0 до 1')
             for line in file:
                 if not line.strip():  # Если строка пуста или содержит только пробелы/перенос строки
                     break
@@ -88,9 +96,13 @@ def random_matrix_input():
     while True: 
         try:    
             eps = float(input('Введите точность (epsilon): ').replace(',', '.'))
+            if eps < 0 or eps > 1:
+                raise Exception('Значение точности должно быть в пределе от 0 до 1')
             break
         except ValueError:
-            print('Введено некорректное значение для точности. Попробуйте еще раз')    
+            print('Введено некорректное значение для точности. Попробуйте еще раз') 
+        except Exception as e:
+            print(f'Ошибка ввода: {e}. Попробуйте еще раз')   
     
     while True:
         try:    

@@ -16,6 +16,7 @@ def check_diagonal_dominance(matrix):
     for i in range(size):
         row_sum = sum(abs(matrix[i][j]) for j in range(size) if i != j)
         if abs(matrix[i][i]) <= row_sum:
+            print(f"Диагональный элемент = {matrix[i][i]}, сумма других элементов = {row_sum}")
             return False
     return True
 
@@ -33,7 +34,7 @@ def bring_to_diagonal_dominance(matrix, vector):
     if check_diagonal_dominance(matrix):
         return matrix, vector
     else:
-        return None, None  # Возвращаем исходные матрицу и вектор, если не удалось привести к преобладанию
+        return None, None 
 
 # выражаем x в виде новой матрицы
 def get_x(matrix, vector):
