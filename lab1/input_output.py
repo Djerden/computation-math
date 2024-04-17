@@ -1,4 +1,5 @@
 from matrix_generator import generate_random_matrix
+import sys
 
 def parse_str(string):
     parts = string.strip().split(' | ')
@@ -18,6 +19,9 @@ def console_input():
             break
         except ValueError:
             print('Введено некорректное значение для точности. Попробуйте еще раз')
+        except EOFError:
+            print('Выход из программы...')
+            sys.exit(0)
         except Exception as e:
             print(f'{e}. Попробуйте еще раз')
 
@@ -29,6 +33,12 @@ def console_input():
             break
         except ValueError as e:
             print('Ошибка ввода:', e, 'Попробуйте еще раз')
+        except EOFError:
+            print('Выход из программы...')
+            sys.exit(0)
+        except Exception as e:
+            print(f'{e}. Попробуйте еще раз')
+    
             
 
     matrix = []
@@ -38,7 +48,7 @@ def console_input():
         while True: 
             try:
                 user_input = input()
-                a, b = parse_str(user_input)
+                a, b = parse_str(user_input.replace(',', '.'))
                 if len(a) != n:
                     raise ValueError('Размерность матрицы не совпадает с количеством коэффициентов в строке')
                 matrix.append(a)
@@ -48,6 +58,11 @@ def console_input():
                 print('Ошибка формата ввода', {e}, 'Попробуйте ввести эту же строку еще раз')
             except IndexError as e:
                 print('Ошибка формата ввода', {e}, 'Попробуйте ввести эту же строку еще раз')
+            except EOFError:
+                print('Выход из программы...')
+                sys.exit(0)
+            except Exception as e:
+                print(f'{e}. Попробуйте еще раз')
     return matrix, vector, eps
 
 # Ввод из файла
@@ -67,15 +82,18 @@ def file_input():
         vector = []
         eps = 0
         with open(path, mode='r', encoding="UTF-8") as file:
-            eps = float(file.readline().strip())
+            eps = float(file.readline().strip().replace(',', '.'))
             if eps < 0 or eps > 1:
                 raise Exception('Значение точности должно быть в пределе от 0 до 1')
             for line in file:
                 if not line.strip():  # Если строка пуста или содержит только пробелы/перенос строки
                     break
-                a, b = parse_str(line)
+                a, b = parse_str(line.replace(',', '.'))
                 matrix.append(a)
                 vector.append(b)
+        for i in matrix:
+            if len(i) != len(matrix):
+                raise ValueError('Матрица должна быть квадратной')
     except FileNotFoundError:
         print("Файл не найден")
         return None, None, None
@@ -101,6 +119,9 @@ def random_matrix_input():
             break
         except ValueError:
             print('Введено некорректное значение для точности. Попробуйте еще раз') 
+        except EOFError:
+            print('Выход из программы...')
+            sys.exit(0)
         except Exception as e:
             print(f'Ошибка ввода: {e}. Попробуйте еще раз')   
     
@@ -111,7 +132,12 @@ def random_matrix_input():
                 raise ValueError('Размерность матрицы должна быть в пределах от 1 до 20')
             break
         except ValueError as e:
-            print("Ошибка ввода:", e)     
+            print("Ошибка ввода:", e)  
+        except EOFError:
+            print('Выход из программы...')
+            sys.exit(0)
+        except Exception as e:
+            print(f'{e}. Попробуйте еще раз')   
     
     matrix, vector = generate_random_matrix(n)    
     return matrix, vector, eps
