@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+    font-family: 'Nunito', sans-serif;
+    height: 125%;
+    background: linear-gradient(to bottom, #9E5A63, #C96567 );
+    background-repeat: revert;
+    color: #000;
+}
+
