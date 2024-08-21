@@ -8,42 +8,110 @@ import BenderGif from "../components/Lab3Components/BenderGif.jsx";
 
 export default function Lab3() {
 
+    // Состояние для выбора уравнения и метода интегрирования
     const [choice, setChoice] = useState({
-        equation: null,
-        method: null
+        equation: 'x^2',
+        method: 'rectangle-left'
     }); // ['x^2', 'sin(x)', '1/x'
+
+    // Состояние для ввода данных
     const [inputData, setInputData] = useState({
-        a: 0,
-        b: 0,
-        eps: 0,
-        n: 0
+        a: null,
+        b: null,
+        eps: null,
+        n: null
     });
-    const [answer, setAnswer] = useState('Answer will be here');
+
+    // Состояние для подсказок
+    const [tips, setTips] = useState({
+        a: false,
+        b: false,
+        eps: false,
+        n: false
+    });
+
+    // Состояние для отображения гифки
     const [isBender, setIsBender] = useState(false); // [true, false
 
+    // Состояние для ответа
+    const [answer, setAnswer] = useState('Answer will be here');
+
+
+    // Функция для сохранения выбора уравнения и метода интегрирования
     function handleChangeChoice(param, value) {
         setChoice({...choice, [param]: value});
     }
 
+    // Функция для сохранения ввода из полей ввода
     function handleChangeInputData(param, value) {
-        setInputData({...inputData, [param]: value});
+        let numericValue = parseInt(value.replace(',', '.').replace(/\s+/g, ''));
+        setInputData({...inputData, [param]: numericValue});
     }
 
+    // Валидация введенных данных
     function validateInput() {
+        let isValid = true;
+        // Сбрасываем все подсказки
+        setTips(prevTips => ({
+            ...prevTips,
+            a: false,
+            b: false,
+            eps: false,
+            n: false
+        }));
 
-        // сделать прроверку данных
-        return true;
+        if (choice.equation == null || choice.method == null) {
+            console.log('Выберите уравнение и метод интегрирования');
+            if (isValid === true) {
+                isValid = false;
+            }
+        }
+        if (typeof inputData.a !== 'number' || isNaN(inputData.a)) {
+            console.log('Ошибка: "a" должно быть числом.');
+            if (isValid === true) {
+                isValid = false;
+            }
+            setTips(prevTips => ({...prevTips, a: true}));
+        }
+
+        if (typeof inputData.b !== 'number' || isNaN(inputData.b)) {
+            console.log('Ошибка: "b" должно быть числом.');
+            if (isValid === true) {
+                isValid = false;
+            }
+            setTips(prevTips => ({...prevTips, b: true}));
+        }
+
+        // Проверка eps
+        if (typeof inputData.eps !== 'number' || isNaN(inputData.eps) || inputData.eps < 0 || inputData.eps > 1) {
+            console.log('Ошибка: "eps" должно быть числом в диапазоне от 0 до 1 включительно.');
+            if (isValid === true) {
+                isValid = false;
+            }
+            setTips(prevTips => ({...prevTips, eps: true}));
+        }
+
+        // Проверка n
+        if (typeof inputData.n !== 'number' || isNaN(inputData.n) || inputData.n <= 0) {
+            console.log('Ошибка: "n" должно быть положительным числом.');
+            if (isValid === true) {
+                isValid = false;
+            }
+            setTips(prevTips => ({...prevTips, n: true}));
+        }
+
+        // Если все проверки прошли успешно
+        return isValid;
     }
-
 
     // Запрос на сервер
     function solveClick() {
         console.log(choice);
         console.log(inputData);
-        if (!validateInput()) {
-            console.log('Данные неполны или некорректны');
-            return;
-        }
+
+        if (!validateInput()) return;
+
+        if (!isBender) setIsBender(true);
         fetch('http://localhost:8000/lab3', {
             method: 'POST',
             headers: {
@@ -63,7 +131,6 @@ export default function Lab3() {
             .catch(error => {
                 console.error('Error:', error)
             });
-        if (!isBender) setIsBender(true);
     }
 
     return (
@@ -77,12 +144,12 @@ export default function Lab3() {
 
                     {/*Inputs*/}
                     <Input
-                        onChange={handleChangeInputData} solveClick={solveClick}/>
+                        tips={tips} onChange={handleChangeInputData} solveClick={solveClick}/>
                 </div>
 
                 {/* Right side */}
                 <Solution answer={answer}/>
-                {isBender ? <BenderGif /> : null}
+                {isBender ? <BenderGif/> : null}
             </div>
         </>
     );

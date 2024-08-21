@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      width: {
+        '88': '22rem',
+        '92': '23rem',
+      },
       colors: {
         custom: {
           '314455': '#314455',

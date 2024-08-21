@@ -8,7 +8,7 @@ export default function ChoiceFactory({onChangeChoice}) {
     const leftPage = (
         <>
             <p className="space-x-2">
-                <input type="radio" name="equation" value="x^2" onChange={handleChangeEquation}/>
+                <input type="radio" name="equation" value="x^2" defaultChecked onChange={handleChangeEquation}/>
                 <label>x^2</label>
             </p>
             <p className="space-x-2">
@@ -25,7 +25,7 @@ export default function ChoiceFactory({onChangeChoice}) {
     const rightPage = (
         <>
             <p className="space-x-2">
-                <input type="radio" name="method" value="rectangle-left" onChange={handleChangeMethod}/>
+                <input type="radio" name="method" value="rectangle-left" defaultChecked onChange={handleChangeMethod}/>
                 <label>Rectangle (left)</label>
             </p>
             <p className="space-x-2">
