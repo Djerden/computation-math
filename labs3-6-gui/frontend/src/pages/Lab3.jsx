@@ -44,8 +44,11 @@ export default function Lab3() {
 
     // Функция для сохранения ввода из полей ввода
     function handleChangeInputData(param, value) {
-        let numericValue = parseInt(value.replace(',', '.').replace(/\s+/g, ''));
-        setInputData({...inputData, [param]: numericValue});
+        let numericValue = parseFloat(value.replace(',', '.').replace(/\s+/g, ''));
+        setInputData(prevInputData => ({
+            ...prevInputData,    // Сохраняем все предыдущие значения
+            [param]: numericValue // Обновляем конкретное поле
+        }));
     }
 
     // Валидация введенных данных
@@ -144,7 +147,7 @@ export default function Lab3() {
 
                     {/*Inputs*/}
                     <Input
-                        tips={tips} onChange={handleChangeInputData} solveClick={solveClick}/>
+                        data={inputData} tips={tips} onChange={handleChangeInputData} solveClick={solveClick}/>
                 </div>
 
                 {/* Right side */}
