@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def integrand(quation, x):
     if quation == 1:
         return x ** 2
