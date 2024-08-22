@@ -16,4 +16,6 @@ class RequestData(BaseModel):
     inputData: InputData
 
 class ResponseData(BaseModel):
-    answer: str
+    square: float
+    parts: float
+    inaccuracy: float
