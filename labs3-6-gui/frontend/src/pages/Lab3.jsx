@@ -4,7 +4,6 @@ import ChoiceFactory from "../components/Lab3Components/ChoiceFactory.jsx";
 import MainTextComponent from "../components/MainTextComponent.jsx";
 import Input from "../components/Lab3Components/Input.jsx";
 import Solution from "../components/Lab3Components/Solution.jsx";
-import BenderGif from "../components/Lab3Components/BenderGif.jsx";
 
 export default function Lab3() {
 
@@ -12,7 +11,7 @@ export default function Lab3() {
     const [choice, setChoice] = useState({
         equation: 'x^2',
         method: 'rectangle-left'
-    }); // ['x^2', 'sin(x)', '1/x'
+    }); // ['x^2', 'sin(x)', '1/x']
 
     // Состояние для ввода данных
     const [inputData, setInputData] = useState({
@@ -30,11 +29,12 @@ export default function Lab3() {
         n: false
     });
 
-    // Состояние для отображения гифки
-    const [isBender, setIsBender] = useState(false); // [true, false
-
     // Состояние для ответа
-    const [answer, setAnswer] = useState('Answer will be here');
+    const [answer, setAnswer] = useState({
+        square: null,
+        parts: null,
+        inaccuracy: null
+    });
 
 
     // Функция для сохранения выбора уравнения и метода интегрирования
@@ -114,7 +114,6 @@ export default function Lab3() {
 
         if (!validateInput()) return;
 
-        if (!isBender) setIsBender(true);
         fetch('http://localhost:8000/lab3', {
             method: 'POST',
             headers: {
@@ -128,7 +127,12 @@ export default function Lab3() {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                setAnswer(data.answer);
+                setAnswer(prevState => ({
+                    ...prevState,
+                    square: data.square,
+                    parts: data.parts,
+                    inaccuracy: data.inaccuracy
+                }));
 
             })
             .catch(error => {
@@ -151,8 +155,7 @@ export default function Lab3() {
                 </div>
 
                 {/* Right side */}
-                <Solution answer={answer}/>
-                {isBender ? <BenderGif/> : null}
+                <Solution choice={choice} data={inputData} answer={answer}/>
             </div>
         </>
     );
