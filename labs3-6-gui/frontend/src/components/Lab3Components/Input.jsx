@@ -1,4 +1,4 @@
-import Tip from "../Tip";
+import Tip from "../common/Tip.jsx";
 
 export default function Input({data, tips, onChange, solveClick}) {
 

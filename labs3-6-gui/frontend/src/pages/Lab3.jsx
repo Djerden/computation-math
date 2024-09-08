@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 import ChoiceFactory from "../components/Lab3Components/ChoiceFactory.jsx";
-import MainTextComponent from "../components/MainTextComponent.jsx";
+import MainTextComponent from "../components/common/MainTextComponent.jsx";
 import Input from "../components/Lab3Components/Input.jsx";
 import Solution from "../components/Lab3Components/Solution.jsx";
 

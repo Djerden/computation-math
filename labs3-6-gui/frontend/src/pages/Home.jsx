@@ -1,5 +1,5 @@
-import MainTextComponent from "../components/MainTextComponent.jsx";
-import CardLab from "../components/CardLab.jsx";
+import MainTextComponent from "../components/common/MainTextComponent.jsx";
+import CardLab from "../components/Home/CardLab.jsx";
 
 import zombieGif from "../assets/zombie.gif";
 import duckGif from "../assets/duck.gif";

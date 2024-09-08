@@ -97,7 +97,7 @@ def polynomial_2(pairs):
 
         # return f"X: {x_}\nY: {y_}\nP2(x) = {a2}x^2+{a1}x+{a0}: {p2_x}\nei: {ei}\nS: {S}\nR: {R}\ndelta: {st_deviation}"
         # return f"X: {x_}\nY: {y_}\nP2(x) = {a0}x^2+{a1}x+{a2}: {p2_x}\nei: {ei}\nS: {S}\nR: {R}\ndelta: {st_deviation}"
-        return [st_deviation, S, f"P1(x) = {a0}x^2 + {a1}x + {a2}", p2_x, ei, p_i, a0, a1, a2]
+        return [st_deviation, S, f"P2(x) = {a0}x^2 + {a1}x + {a2}", p2_x, ei, p_i, a0, a1, a2]
 
     except ZeroDivisionError:
         return "There are nums < 0, cannot solve approximation"
@@ -308,3 +308,14 @@ def correlation_r(pairs):
     r = sum((x[i] - x_) * (y[i] - y_) for i in range(n)) / (
                 sum((x[i] - x_) ** 2 for i in range(n)) * sum((y[i] - y_) ** 2 for i in range(n))) ** 0.5
     return r
+
+
+def main():
+    valid_pairs = [[0.4, 2.96], [0.8, 4.98], [1.2, 4.42], [1.6, 2.81], [2, 1.67], [2.4, 1.02], [2.8, 0.66], [3.2, 0.45]]
+    result = approximation(valid_pairs)
+    for arr in result:
+        for i in arr:
+            print(i)
+        print("------------------------")
+        print()
+main()

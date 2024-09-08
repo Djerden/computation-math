@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from app.routers import lab3
+from app.routers import lab3, lab4, lab5, lab6
 
 app = FastAPI()
 
@@ -14,5 +14,8 @@ app.add_middleware(
 )
 
 app.include_router(lab3.router)
+app.include_router(lab4.router)
+app.include_router(lab5.router)
+app.include_router(lab6.router)
 
 
