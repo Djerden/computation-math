@@ -4,7 +4,8 @@ export default function Input({pairs, setPairs, sendRequest}) {
 
     const [inputValues, setInputValues] = useState(Array(12).fill("")); // Временное состояние для ввода
 
-
+    console.log(pairs)
+    console.log(inputValues)
     // Массив для элементов ввода
     const inputs = Array.from({length: 12}, (_, i) => i + 1);
 
@@ -61,14 +62,29 @@ export default function Input({pairs, setPairs, sendRequest}) {
     }
 
     function validateInput() {
-        return true;
+        // Фильтруем пары, где x и y не null и не NaN
+        const validPairs = pairs.filter(pair => pair.x !== null && pair.y !== null && !isNaN(pair.x) && !isNaN(pair.y));
+
+        // Проверяем, что количество пар от 8 до 12
+        if (validPairs.length < 8 || validPairs.length > 12) {
+            alert("Количество валидных пар должно быть от 8 до 12.");
+            return false;
+        }
+
+        return true; // Если все проверки пройдены
     }
 
     function solveClick() {
+        // Если валидация не пройдена, выходим из функции
         if (!validateInput()) {
-            return
+            return;
         }
-        sendRequest()
+
+        // Фильтруем массив, удаляя элементы, где x или y равны null или NaN
+        const filteredPairs = pairs.filter(pair => pair.x !== null && pair.y !== null && !isNaN(pair.x) && !isNaN(pair.y));
+
+        // Отправляем новый массив в sendRequest
+        sendRequest(filteredPairs);
     }
 
     return (

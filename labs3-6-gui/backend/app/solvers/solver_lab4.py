@@ -176,7 +176,7 @@ def exponential(pairs):
         p_i = p(ei, y_)
 
         # return f"X: {x_}\nY: {y_}\nP2(x) = {a}*log(x)+{b}: {p_x}\nei: {ei}\nS: {S}\nR: {R}\ndelta: {st_deviation}"
-        return [st_deviation, S, f"P1(x) = {a}x + ln({b})", p_x, ei, R, p_i, a, b]
+        return [st_deviation, S, f"P1(x) = {a}x + log({b})", p_x, ei, R, p_i, a, b]
 
     except ValueError:
         return "There are nums < 0, cannot solve logarithmic approximation"
@@ -207,7 +207,7 @@ def logarithmic(pairs):
         p_i = p(ei, y_)
 
         # return f"X: {x_}\nY: {y_}\nP2(x) = {a}*log(x)+{b}: {p_x}\nei: {ei}\nS: {S}\nR: {R}\ndelta: {st_deviation}"
-        return [st_deviation, S, f"P1(x) = {a}ln(x) + {b}", p_x, ei, R, p_i, a, b]
+        return [st_deviation, S, f"P1(x) = {a}log(x) + {b}", p_x, ei, R, p_i, a, b]
 
     except ZeroDivisionError:
         return "There are nums < 0, cannot solve approximation"
@@ -259,7 +259,7 @@ def power(pairs):
         return [
             S2,
             compare_sqr,
-            f"P1(x) = {a}ln(x) + {b}",
+            f"P1(x) = {a}log(x) + {b}",
             fi,
             compare,
             pirson,

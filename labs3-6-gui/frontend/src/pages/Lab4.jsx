@@ -9,6 +9,7 @@ export default function Lab4() {
 
     const [pairs, setPairs] = useState(Array(12).fill({x: null, y: null}));
     const [answer, setAnswer] = useState({
+        pairs: [],
         linear: {},
         square: {},
         cubic: {},
@@ -17,21 +18,21 @@ export default function Lab4() {
         power: {}
     });
 
-    function sendRequest() {
-        console.log(pairs)
-            // const filteredPairs = pairs.filter(pair => pair.x !== null && pair.y !== null);
+    function sendRequest(filteredPairs) {
+        console.log(filteredPairs)
 
         fetch('http://localhost:8000/lab4', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            // body: JSON.stringify(filteredPairs)
+            body: JSON.stringify(filteredPairs)
         })
             .then(response => response.json())
             .then(data => {
                 console.log(data);
                 setAnswer({
+                    pairs: data.pairs,
                     linear: data.linear,
                     square: data.square,
                     cubic: data.cubic,
@@ -42,26 +43,28 @@ export default function Lab4() {
 
             })
             .catch(error => {
-                console.error('Error:', error)
+                console.error('Error:', error);
+                alert(`Ошибка: ${error.message}`);
             });
     }
 
     return (
         <>
             <MainTextComponent labName="Function approximation">Lab #4</MainTextComponent>
-            <div className="flex flex-row flex-wrap gap-6 justify-start mx-6">
+            <div className="flex flex-col gap-6 mx-6">
+                {/*Top*/}
+                <div className="flex flex-row justify-center flex-wrap gap-6">
 
-                {/*LeftSide: Input, Choose file and button Solve*/}
-                <Input pairs={pairs} setPairs={setPairs} sendRequest={sendRequest}/>
+                    <Input pairs={pairs} setPairs={setPairs} sendRequest={sendRequest}/>
 
-                {/*RightSide*/}
-                <div className="flex flex-col gap-6 rounded flex-grow">
+                    <div className="w-full md:w-auto flex-grow">
+                        <Solution answer={answer}/>
+                    </div>
+                </div>
 
-                    {/*График*/}
+                {/*Bottom*/}
+                <div>
                     <GraphComponent answer={answer}/>
-
-                    {/*Решение*/}
-                    <Solution answer={answer}/>
                 </div>
             </div>
         </>
