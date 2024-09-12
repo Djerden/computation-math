@@ -30,6 +30,7 @@ export default function Lab4() {
         })
             .then(response => response.json())
             .then(data => {
+                console.log('Полученные данные:')
                 console.log(data);
                 setAnswer({
                     pairs: data.pairs,

@@ -33,6 +33,9 @@ export default function Input({pairs, setPairs, sendRequest}) {
 
     // функция для загрузки и чтения файла
     function handleFileChange(event) {
+
+        clearButton();
+
         const file = event.target.files[0];
         const reader = new FileReader();
 
@@ -41,23 +44,47 @@ export default function Input({pairs, setPairs, sendRequest}) {
             const text = e.target.result;
             const lines = text.split('\n').filter(line => line.trim() !== ""); // Игнорируем пустые строки
 
-            const newInputValues = [...inputValues];
-            const newPairs = [...pairs];
+            // Проверка, что файл содержит хотя бы одну строку
+            if (lines.length === 0) {
+                alert("Файл пустой или не содержит валидных данных.");
+                return;
+            }
 
-            lines.forEach((line, index) => {
-                const [x, y] = line.trim().replace(',', '.').split(/\s+/).map(Number);
-                // Проверяем, что обе части являются числами
-                if (!isNaN(x) && !isNaN(y)) {
-                    // Сохраняем значения в состояния
-                    newInputValues[index] = `${x} ${y}`;
-                    newPairs[index] = {x, y};
+            setTimeout(() => {
+                const newInputValues = Array(12).fill(""); // Заново создаем массив
+                const newPairs = Array(12).fill({x: null, y: null}); // Заново создаем массив
+                let invalidDataFound = false; // Флаг для обнаружения некорректных данных
+
+
+
+                lines.forEach((line, index) => {
+                    const [x, y] = line.trim().replace(',', '.').split(/\s+/).map(Number);
+                    // Проверяем, что обе части являются числами
+                    if (!isNaN(x) && !isNaN(y)) {
+                        // Сохраняем значения в состояния
+                        newInputValues[index] = `${x} ${y}`;
+                        newPairs[index] = {x, y};
+                    } else {
+                        invalidDataFound = true; // Некорректные данные найдены
+                    }
+                });
+
+                // Если были найдены некорректные данные, выбрасываем alert
+                // Если были найдены некорректные данные, выбрасываем alert, но продолжаем
+                if (invalidDataFound) {
+                    alert("Некоторые строки содержат некорректные данные и были отброшены.");
                 }
-            });
 
-            // Обновляем состояния
-            setInputValues(() => newInputValues);
-            setPairs(() => newPairs);
+                // Обновляем состояния новыми значениями
+                setInputValues(newInputValues);
+                setPairs(newPairs);
+            }, 0); // Таймаут 0 мс, чтобы дождаться завершения обновления состояний
         }
+
+        reader.onerror = function () {
+            alert("Ошибка при чтении файла.");
+        };
+
         reader.readAsText(file);
     }
 
@@ -87,6 +114,14 @@ export default function Input({pairs, setPairs, sendRequest}) {
         sendRequest(filteredPairs);
     }
 
+    function clearButton() {
+        // Сбрасываем inputValues в массив пустых строк
+        setInputValues(Array(12).fill(""));
+
+        // Сбрасываем pairs в массив объектов с x и y равными null
+        setPairs(Array(12).fill({x: null, y: null}));
+    }
+
     return (
         <div className="flex flex-col">
             <div className="flex flex-col bg-white text-black p-6 gap-2 rounded-t">
@@ -107,6 +142,11 @@ export default function Input({pairs, setPairs, sendRequest}) {
                         </p>
                     ))}
                 </div>
+                <button
+                    className="bg-black px-6 w-full rounded hover:bg-neutral-700 text-white"
+                    onClick={clearButton}
+                >Очистить
+                </button>
             </div>
             <div className="flex flex-row items-center bg-custom-644e5b p-6 text-white rounded-b">
                 <input type="file"

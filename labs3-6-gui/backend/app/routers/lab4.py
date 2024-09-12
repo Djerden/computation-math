@@ -31,10 +31,15 @@ async def process_data(pairs: List[Pair]):
     # valid_pairs = [[0.4, 2.96], [0.8, 4.98], [1.2, 4.42], [1.6, 2.81], [2, 1.67], [2.4, 1.02], [2.8, 0.66], [3.2, 0.45]]
 
     # Вызов функции approximation для обработки данных
-    results = approximation(valid_pairs)
+    try:
+        results = approximation(valid_pairs)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при аппроксимации: {str(e)}")
 
     # Сделать проверку на ошибки, которые могут появиться в методе approximation
-
-    response = create_response_model(valid_pairs, results)
+    try:
+        response = create_response_model(valid_pairs, results)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при преобразовании данных к модели: {str(e)}")
 
     return response
