@@ -5,6 +5,11 @@ import Desmos from 'desmos';
 
 export default function GraphComponent({answer}) {
 
+    const calculatorRef = useRef(null);
+    const calculatorInstanceRef = useRef(null);
+    const expressionIds = useRef([]);
+
+
     // Поиск границ для фокусировки десмоса
     function findMinMax(pairs) {
 
@@ -30,7 +35,6 @@ export default function GraphComponent({answer}) {
         // Если массив пустой, возвращаем границы по умолчанию
         return { minX: -10, maxX: 10, minY: -10, maxY: 10 };
     }
-    const borders = findMinMax(answer.pairs);
 
     // преобразование точек для десмоса
     function formatPointsForDesmos(pairs) {
@@ -40,10 +44,35 @@ export default function GraphComponent({answer}) {
         }
         return '';  // Возвращаем пустую строку, если массив пустой
     }
-    const points = formatPointsForDesmos(answer.pairs);
 
-    const calculatorRef = useRef(null);
-    const calculatorInstanceRef = useRef(null);
+    // преобразование аппроксимирующих функций
+    function getApproximationFunctions() {
+        let result = [];
+        if (answer.functions.length > 0) {
+            const array = answer.functions;
+            array.forEach((approximation) => {
+                const element = [];
+
+                // Проверяем оба условия
+                if (!approximation.name || !approximation.function) {
+                    return;  // Пропускаем итерацию, если хотя бы одно из условий не выполнено
+                }
+
+                // Если оба условия выполнены, добавляем элементы
+                element.push(approximation.name);
+                element.push(approximation.function);
+
+                // добавляем в итоговый ответ
+                result.push(element);
+            })
+        }
+        return result;
+    }
+
+    // Параметры для графика
+    const functions = getApproximationFunctions();
+    const borders = findMinMax(answer.pairs);
+    const points = formatPointsForDesmos(answer.pairs);
 
     useEffect(() => {
         calculatorInstanceRef.current = Desmos.GraphingCalculator(calculatorRef.current, {
@@ -66,6 +95,12 @@ export default function GraphComponent({answer}) {
     useEffect(() => {
         if (calculatorInstanceRef.current) {
 
+            // Удаляем предыдущие выражения
+            expressionIds.current.forEach(id => {
+                calculatorInstanceRef.current.removeExpression({ id });
+            });
+            expressionIds.current = []; // Очищаем список ID
+
             // Установка границ окна по x и y
             calculatorInstanceRef.current.setMathBounds({
                 left: borders.minX - 1,  // x от -1
@@ -79,40 +114,23 @@ export default function GraphComponent({answer}) {
                 latex: points  // формат LaTeX для координат точек
             });
 
-            // Проверка и отрисовка линейной функции
-            if (Object.keys(answer.linear).length !== 0) {
-                const linearFunction = answer.linear.approximating_function.split('=')[1].trim();
-                calculatorInstanceRef.current.setExpression({ id: 'graph1', latex: linearFunction });
-            }
+            // Проверяем, что массив не пуст
+            if (functions.length > 0) {
+                functions.forEach((expression, index) => {
+                    const [label, latex] = expression; // Извлекаем label и latex
+                    const id = `graph${index + 1}`;
+                    calculatorInstanceRef.current.setExpression({
+                        id: id,    // Уникальный id для каждого графика
+                        latex: latex,               // Математическое выражение
+                        showLabel: true,            // Отображать лейбл
+                        label: label,             // Лейбл для графика
+                        labelSize: 'medium',        // Размер лейбла
+                        labelOrientation: 'above'   // Ориентация лейбла
+                    });
 
-            // Проверка и отрисовка квадратной функции
-            if (Object.keys(answer.square).length !== 0) {
-                const squareFunction = answer.square.approximating_function.split('=')[1].trim();
-                calculatorInstanceRef.current.setExpression({ id: 'graph2', latex: squareFunction });
-            }
-
-            // Проверка и отрисовка кубической функции
-            if (Object.keys(answer.cubic).length !== 0) {
-                const cubicFunction = answer.cubic.approximating_function.split('=')[1].trim();
-                calculatorInstanceRef.current.setExpression({ id: 'graph3', latex: cubicFunction });
-            }
-
-            // Проверка и отрисовка экспоненциальной функции
-            if (Object.keys(answer.exp).length !== 0) {
-                const expFunction = answer.exp.approximating_function.split('=')[1].trim();
-                calculatorInstanceRef.current.setExpression({ id: 'graph4', latex: expFunction });
-            }
-
-            // Проверка и отрисовка логарифмической функции
-            if (Object.keys(answer.logarithm).length !== 0) {
-                const logarithmFunction = answer.logarithm.approximating_function.split('=')[1].trim();
-                calculatorInstanceRef.current.setExpression({ id: 'graph5', latex: logarithmFunction });
-            }
-
-            // Проверка и отрисовка степенной функции
-            if (Object.keys(answer.power).length !== 0) {
-                const powerFunction = answer.power.approximating_function.split('=')[1].trim();
-                calculatorInstanceRef.current.setExpression({ id: 'graph6', latex: powerFunction });
+                    // Сохраняем ID выражения
+                    expressionIds.current.push(id);
+                });
             }
         }
     }, [answer]);

@@ -1,46 +1,37 @@
+import { useEffect, useRef } from "react";
+
 export default function Solution({answer}) {
 
+    const textareaRef = useRef(null);  // Создаём реф для textarea
+
     function prepareAnswer() {
-        const isNotEmpty = (obj) => Object.keys(obj).length > 0;
+        let result = '';
+        if (answer.functions.length > 0) {
+            const array = answer.functions;
 
-        const result = []
+            array.forEach((approximation) => {
+                if (approximation.name) {
+                    result += approximation.name + ':\n';
+                }
+                if (approximation.description) {
+                    result += approximation.description + '\n';
+                }
+            })
 
-        const formatObject = (obj) => {
-            return Object.entries(obj)
-                .map(([key, value]) => `${key}: ${value}`)
-                .join('\n'); // Преобразуем объект в строку "ключ: значение"
-        };
-
-        if (isNotEmpty(answer.linear)) {
-            result.push(`Линейная:\n${formatObject(answer.linear)}`);
+            return result;
+        } else {
+            return 'Answer will be here'
         }
-
-        if (isNotEmpty(answer.square)) {
-            result.push(`Квадратичная:\n${formatObject(answer.square)}`);
-        }
-
-        if (isNotEmpty(answer.cubic)) {
-            result.push(`Кубическая:\n${formatObject(answer.cubic)}`);
-        }
-
-        if (isNotEmpty(answer.exp)) {
-            result.push(`Экспоненциальная:\n${formatObject(answer.exp)}`);
-        }
-
-        if (isNotEmpty(answer.logarithm)) {
-            result.push(`Логарифмическая:\n${formatObject(answer.logarithm)}`);
-        }
-
-        if (isNotEmpty(answer.power)) {
-            result.push(`Степенная:\n${formatObject(answer.power)}`);
-        }
-        // Если result пустой, возвращаем пустую строку
-        return result.length > 0 ? result.join('\n\n') : '';
     }
 
-    let result = prepareAnswer();
-    // Если результат пустой, присваиваем "Answer will be here"
-    result = result || "Answer will be here";
+    const result = prepareAnswer()
+
+    useEffect(() => {
+        // Устанавливаем прокрутку в начало при изменении ответа
+        if (textareaRef.current) {
+            textareaRef.current.scrollTop = 0;
+        }
+    }, [answer]);  // Этот эффект срабатывает каждый раз, когда обновляется `answer`
 
     function saveAnswerAsFile(fileName) {
 

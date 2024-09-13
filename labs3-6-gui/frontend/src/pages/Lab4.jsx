@@ -10,12 +10,8 @@ export default function Lab4() {
     const [pairs, setPairs] = useState(Array(12).fill({x: null, y: null}));
     const [answer, setAnswer] = useState({
         pairs: [],
-        linear: {},
-        square: {},
-        cubic: {},
-        exp: {},
-        logarithm: {},
-        power: {}
+        functions: [],
+        bestApprox: null
     });
 
     function sendRequest(filteredPairs) {
@@ -28,27 +24,26 @@ export default function Lab4() {
             },
             body: JSON.stringify(filteredPairs)
         })
-            .then(response => response.json())
+            .then(response => {
+
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.detail || 'Произошла ошибка');
+                    });
+                }
+                return response.json()
+            })
             .then(data => {
                 console.log('Полученные данные:')
                 console.log(data);
-                setAnswer({
-                    pairs: data.pairs,
-                    linear: data.linear,
-                    square: data.square,
-                    cubic: data.cubic,
-                    exp: data.exp,
-                    logarithm: data.logarithm,
-                    power: data.power
-                });
 
+                setAnswer(data)
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert(`Ошибка: ${error.message}`);
             });
     }
-
     return (
         <>
             <MainTextComponent labName="Function approximation">Lab #4</MainTextComponent>
