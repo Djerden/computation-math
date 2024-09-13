@@ -65,7 +65,7 @@ export default function Input({data, tips, onChange, solveClick}) {
                         min="0"
                         value={isNaN(data.n) ? '' : (data.n ?? '')}
                         onChange={(event) => onChange('n', event.target.value)}/>
-                    {tips.n ? <Tip>n должно быть положительным числом</Tip> : null}
+                    {tips.n ? <Tip>n должно быть положительным целым числом, не меньше 4</Tip> : null}
                 </div>
             </div>
             <div className="flex flex-row justify-between items-center mt-6">

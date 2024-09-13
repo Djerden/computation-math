@@ -95,8 +95,8 @@ export default function Lab3() {
         }
 
         // Проверка n
-        if (typeof inputData.n !== 'number' || isNaN(inputData.n) || inputData.n <= 0) {
-            console.log('Ошибка: "n" должно быть положительным числом.');
+        if (typeof inputData.n !== 'number' || isNaN(inputData.n) || inputData.n < 4 || !Number.isInteger(inputData.n)) {
+            console.log('Ошибка: "n" должно быть положительным целым числом, не меньше 4');
             if (isValid === true) {
                 isValid = false;
             }
