@@ -18,7 +18,7 @@ export default function Lab3() {
         a: null,
         b: null,
         eps: null,
-        n: null
+        n: 10
     });
 
     // Состояние для подсказок

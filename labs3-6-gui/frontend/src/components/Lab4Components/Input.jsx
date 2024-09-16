@@ -145,7 +145,7 @@ export default function Input({pairs, setPairs, sendRequest}) {
                 <button
                     className="bg-black px-6 w-full rounded hover:bg-neutral-700 text-white"
                     onClick={clearButton}
-                >Очистить
+                >Clear
                 </button>
             </div>
             <div className="flex flex-row items-center bg-custom-644e5b p-6 text-white rounded-b">

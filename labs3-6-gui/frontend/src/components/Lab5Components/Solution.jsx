@@ -1,22 +1,6 @@
-export default function Solution() {
+export default function Solution({answer}) {
 
 
-
-    // function saveAnswerAsFile(fileName) {
-    //
-    //     const blob = new Blob([answer], {type: 'text/plain'});
-    //
-    //     // создаем ссылку на скачивание
-    //     const link = document.createElement('a');
-    //     link.href = URL.createObjectURL(blob);
-    //     link.download = fileName;
-    //
-    //     // Программно нажимаем на ссылку, чтобы инициировать скачивание
-    //     link.click();
-    //
-    //     // Освобождаем URL
-    //     URL.revokeObjectURL(link.href)
-    // }
 
     return (
         <div className="flex flex-col bg-custom-314455 text-white p-6 gap-2 rounded w-full">

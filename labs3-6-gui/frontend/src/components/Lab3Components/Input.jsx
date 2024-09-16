@@ -12,7 +12,7 @@ export default function Input({data, tips, onChange, solveClick}) {
             const lines = text.split('\n');
             lines.forEach(line => {
                const [key, value] = line.trim().split(/\s+/);
-                if (['a', 'b', 'eps', 'n'].includes(key)) {
+                if (['a', 'b', 'eps'].includes(key)) { // удалил 'n'
                     onChange(key, value);
                 }
             });
@@ -57,16 +57,16 @@ export default function Input({data, tips, onChange, solveClick}) {
                         onChange={(event) => onChange('eps', event.target.value)}/>
                     {tips.eps ? <Tip>eps должно быть числом в диапазоне от 0 до 1 включительно</Tip> : null}
                 </div>
-                <div className="flex flex-col">
-                    <input
-                        className="px-2 py-1 rounded"
-                        type="number"
-                        placeholder="enter n"
-                        min="0"
-                        value={isNaN(data.n) ? '' : (data.n ?? '')}
-                        onChange={(event) => onChange('n', event.target.value)}/>
-                    {tips.n ? <Tip>n должно быть положительным целым числом, не меньше 4</Tip> : null}
-                </div>
+                {/*<div className="flex flex-col">*/}
+                {/*    <input*/}
+                {/*        className="px-2 py-1 rounded"*/}
+                {/*        type="number"*/}
+                {/*        placeholder="enter n"*/}
+                {/*        min="0"*/}
+                {/*        value={isNaN(data.n) ? '' : (data.n ?? '')}*/}
+                {/*        onChange={(event) => onChange('n', event.target.value)}/>*/}
+                {/*    {tips.n ? <Tip>n должно быть положительным целым числом, не меньше 4</Tip> : null}*/}
+                {/*</div>*/}
             </div>
             <div className="flex flex-row justify-between items-center mt-6">
                 <input
