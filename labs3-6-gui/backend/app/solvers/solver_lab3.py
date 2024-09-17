@@ -7,12 +7,20 @@ def integrand(quation, x):
         return np.sin(x)
     if quation == 3:
         try:
-            return 1 / x
+            if(x == 0):
+                return 0
+            else:
+                return 1 / x
         except ZeroDivisionError:
             return "Infinity breaking point at x"
 
 
 def rectangle_method_left(quation, a, b, e, parts):
+    a = float(a)
+    b = float(b)
+    e = float(e)
+    parts = int(parts)
+
     integral = 99999
     answer = []
 
@@ -39,6 +47,10 @@ def rectangle_method_left(quation, a, b, e, parts):
 
 
 def rectangle_method_centre(quation, a, b, e, parts):
+    a = float(a)
+    b = float(b)
+    e = float(e)
+
     integral = 99999
     answer = []
 
@@ -65,6 +77,10 @@ def rectangle_method_centre(quation, a, b, e, parts):
 
 
 def rectangle_method_right(quation, a, b, e, parts):
+    a = float(a)
+    b = float(b)
+    e = float(e)
+
     integral = 99999
     answer = []
     while integral > e and parts < 10000000:
@@ -90,6 +106,10 @@ def rectangle_method_right(quation, a, b, e, parts):
 
 
 def trapezoidal_method(quation, a, b, e, parts):
+    a = float(a)
+    b = float(b)
+    e = float(e)
+
     integral = 99999
     answer = []
 
@@ -126,6 +146,11 @@ def trapezoidal_method(quation, a, b, e, parts):
 
 
 def simpson_method(quation, a, b, e, parts):
+    a = float(a)
+    b = float(b)
+    e = float(e)
+    parts = int(parts)
+
     integral = 99999
     answer = []
 

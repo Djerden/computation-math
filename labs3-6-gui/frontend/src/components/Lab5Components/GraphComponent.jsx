@@ -29,13 +29,27 @@ export default function GraphComponent({name, answer}) {
     // блок для обновления функций, чтобы не пересоздавать обьект калькулятора
     useEffect(() => {
         if (calculatorInstanceRef.current) {
-            calculatorInstanceRef.current.setExpression({ id: 'graph1', latex: 'y=x^2' });
-            // тут расписать для ответ калькулятора
-            //
-            //
-            //
-            //
-            calculatorInstanceRef.current.setExpression
+            // Очистить предыдущие выражения
+            calculatorInstanceRef.current.setExpressions([]);
+
+            // Проходим по каждому графику из answer.graphs
+            answer.graphs.forEach((graph, index) => {
+                // Проверяем, что массивы x и y не пустые
+                if (graph.x.length > 0 && graph.y.length > 0) {
+                    // Преобразуем данные x и y в строку списков для построения линии
+                    const xValues = graph.x.join(',');
+                    const yValues = graph.y.join(',');
+
+                    // Устанавливаем выражение для линии на графике
+                    calculatorInstanceRef.current.setExpression({
+                        id: `graph${index + 1}`,
+                        latex: `\\operatorname{polygon}\\left( [${xValues}], [${yValues}] \\right)`,
+                        color: Desmos.Colors.BLUE,
+                        lineStyle: Desmos.Styles.SOLID,
+                        points: false  // Убираем точки, оставляем только линию
+                    });
+                }
+            });
         }
     }, [answer]);
 

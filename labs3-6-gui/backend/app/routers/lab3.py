@@ -19,6 +19,11 @@ async def process_data(request_data: RequestData):
         case _:
             raise HTTPException(status_code=400, detail="Invalid equation type provided.")
 
+    input_data.a = float(input_data.a)
+    input_data.b = float(input_data.b)
+    input_data.eps = float(input_data.eps)
+    input_data.n = int(input_data.n)  # Если `n` — целое число, преобразуем в `int`
+
     answer = None
     match choice.method:
         case "rectangle-left":

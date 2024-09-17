@@ -8,16 +8,19 @@ import GraphComponent from "../components/Lab5Components/GraphComponent.jsx";
 
 export default function Lab5() {
 
-    const [answer, setAnswer] = useState();
+    const [answer, setAnswer] = useState({
+        result: "answer will be here",
+        graphs: []
+    });
 
-    function sendRequest() {
+    function sendRequest(dataInput) {
 
         fetch('http://localhost:8000/lab5', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify("") // сюда положить данные
+            body: JSON.stringify(dataInput) // сюда положить данные
         })
             .then(response => {
                 if (!response.ok) {
@@ -32,7 +35,7 @@ export default function Lab5() {
                 console.log(data);
 
                 // обработать результат
-                //setAnswer(data)
+                setAnswer({result: data.result, graphs: data.graphs})
             })
             .catch(error => {
                 console.error('Error:', error);

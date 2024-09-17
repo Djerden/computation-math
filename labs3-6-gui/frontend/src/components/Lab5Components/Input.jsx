@@ -40,9 +40,6 @@ export default function Input({requestFunction}) {
 
 
 
-    console.log(interpolationPoint);
-    console.log(interpolationPointInput);
-
     function changeInputMethod(event) {
         setInputMethod(() => (event.target.value))
     }
@@ -217,7 +214,6 @@ export default function Input({requestFunction}) {
         console.log('Валидация пройдена')
         // Создаем объект data
         const data = {
-            method: inputMethod, // Добавляем метод, которым были заданы данные
             interpolationPoint,  // Добавляем interpolationPoint в любом случае
         };
 
@@ -226,10 +222,67 @@ export default function Input({requestFunction}) {
             data.x = handData.x;
             data.y = handData.y;
         } else if (inputMethod === "function") {
-            data.function = functionData.function;
-            data.a = functionData.a;
-            data.b = functionData.b;
-            data.points = functionData.points;
+            const func = functionData.function;  // 'sin' или 'cos'
+            const a = parseFloat(functionData.a);  // Начало интервала
+            const b = parseFloat(functionData.b);  // Конец интервала
+            const points = parseInt(functionData.points);  // Количество точек
+
+            // Проверка значений a, b и points
+            if (isNaN(a) || isNaN(b) || isNaN(points)) {
+                console.error('Значения a, b и количество точек должны быть числами');
+                return;
+            }
+
+            // Проверка корректности интервала и количества точек
+            if (b <= a) {
+                console.error('Значение b должно быть больше a');
+                return;
+            }
+            if (points <= 1) {
+                console.error('Количество точек должно быть больше 1');
+                return;
+            }
+
+            // Ограничение максимального числа точек
+            const MAX_POINTS = 1000;
+            if (points > MAX_POINTS) {
+                console.error(`Количество точек не должно превышать ${MAX_POINTS}`);
+                return;
+            }
+
+            // Проверка функции
+            if (func !== 'sin(x)' && func !== 'cos(x)') {
+                console.error('Поддерживаются только функции sin и cos');
+                return;
+            }
+
+            // Проверка точки интерполяции
+            if (interpolationPoint < a || interpolationPoint > b) {
+                console.error('Точка интерполяции должна находиться в пределах интервала');
+                return;
+            }
+
+            // Вычисление шагового интервала
+            const step = (b - a) / (points - 1);
+            const x = [];
+            const y = [];
+
+            // Вычисление точек x и соответствующих y
+            for (let i = 0; i < points; i++) {
+                const xi = a + i * step;  // Точка x
+                x.push(xi);
+
+                // Вычисление соответствующего значения y
+                if (func === 'sin(x)') {
+                    y.push(Math.sin(xi));
+                } else if (func === 'cos(x)') {
+                    y.push(Math.cos(xi));
+                }
+            }
+
+            // Добавление данных в объект data
+            data.x = x;
+            data.y = y;
         } else if (inputMethod === "file") {
             data.x = fileData.x;
             data.y = fileData.y;
