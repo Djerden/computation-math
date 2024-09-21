@@ -39,28 +39,31 @@ export default function GraphComponent({name, inter_point, interpolation_nodes, 
     useEffect(() => {
         if (calculatorInstanceRef.current) {
 
-            // Преобразуем массивы x и y в строку списков для построения линии
-            // Преобразуем массивы x и y в строку для построения линий между точками
-            // Функция для округления чисел до определенного количества знаков
-            const roundTo = (num, places) => {
-                const factor = Math.pow(10, places);
-                return Math.round(num * factor) / factor;
-            };
 
-// Округляем массивы x и y до 2 знаков после запятой
-            const xRounded = x.map(num => roundTo(num, 2));
-            const yRounded = y.map(num => roundTo(num, 2));
-            // Преобразуем массивы xRounded и yRounded в строку для построения линий между точками
-            const xValues = xRounded.join(', ');
-            const yValues = yRounded.join(', ');
+            // Сортировка x и соответствующая перестановка y
+            const combined = x.map((value, index) => ({ xValue: value, yValue: y[index] }));
+
+            // Сортируем по значениям x
+            combined.sort((a, b) => a.xValue - b.xValue);
+
+            // Получаем отсортированные массивы x и y
+            const sortedX = combined.map(item => item.xValue);
+            const sortedY = combined.map(item => item.yValue);
+
+            // Далее используйте отсортированные x и y
+            const xValues = sortedX.join(', ');
+            const yValues = sortedY.join(', ');
+
+            console.log(xValues)
+            console.log(yValues)
 
             // Устанавливаем выражение для построения линии по точкам
             calculatorInstanceRef.current.setExpression({
                 id: 'graph_line',
-                latex: `y = \\operatorname{fitline}\\left([${xValues}], [${yValues}] \\right)`,
-                color: Desmos.Colors.BLUE,  // Цвет линии
-                lineStyle: Desmos.Styles.SOLID,  // Стиль линии
-                points: false  // Убираем отображение точек
+                latex: `y = ([${xValues}], [${yValues}])`,
+                color: Desmos.Colors.GREEN,  // Цвет линии
+                points: false,  // Убираем отображение точек
+                lines: true
             });
 
             // Отрисовка точек из interpolation_nodes

@@ -100,8 +100,8 @@ export default function Input({requestFunction}) {
             });
 
             setFileDataInputs({
-                x: lines[0].trim(),
-                y: lines[1].trim()
+                x: lines[0].trim().replace(/\s+/g, ' '),
+                y: lines[1].trim().replace(/\s+/g, ' ')
             });
 
         }

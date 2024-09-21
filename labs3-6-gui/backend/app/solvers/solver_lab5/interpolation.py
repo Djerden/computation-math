@@ -10,6 +10,10 @@ def lagrange_interpolation(x, y, value):
             if i != j:
                 term *= (value - x[j]) / (x[i] - x[j])
         result += term
+
+    # Добавляем проверку на малые значения после завершения вычислений
+    if abs(result) < 1e-12:
+        result = 0.0
     return result
 
 
@@ -22,6 +26,10 @@ def newton_interpolation_with_shared_difference(x, y, value):
     for i in range(1, n):
         temp *= (value - x[i - 1])
         result += temp * (shared_differences_table[0, i])
+
+    # Добавляем проверку на малое значение результата
+    if abs(result) < 1e-12:
+        result = 0.0
     return result
 
 
@@ -48,6 +56,10 @@ def newton_interpolation_with_finite_difference(x, y, inter_point):
                 prod *= (t_forward(x_val) - j)
             term *= prod / math.factorial(i)
             result += term
+
+        # Добавляем проверку на малое значение результата
+        if abs(result) < 1e-12:
+            result = 0.0
         return result
 
     def backward(x_val):
@@ -59,7 +71,12 @@ def newton_interpolation_with_finite_difference(x, y, inter_point):
                 prod *= (t_backward(x_val) + j)
             term *= prod / math.factorial(i)
             result += term
+
+        # Добавляем проверку на малое значение результата
+        if abs(result) < 1e-12:
+            result = 0.0
         return result
+
     if (x[-1] - x[0]) / 2 < inter_point:
         return forward(inter_point)
     else:
@@ -75,6 +92,9 @@ def first_interpolation_gauss_form(n, xs, ys, alpha_index, dts, h, fin_diffs, va
             term *= t + dts[j]
         result += term * fin_diffs[k][len(fin_diffs[k]) // 2] / math.factorial(k)
 
+    # Добавляем проверку на малое значение результата
+    if abs(result) < 1e-12:
+        result = 0.0
     return result
 
 
@@ -86,6 +106,10 @@ def second_interpolation_gauss_form(n, xs, ys, alpha_index, dts, h, fin_diffs, v
         for j in range(k):
             product *= t - dts[j]
         result += product * fin_diffs[k][len(fin_diffs[k]) // 2 - (1 - len(fin_diffs[k]) % 2)] / math.factorial(k)
+
+    # Добавляем проверку на малое значение результата
+    if abs(result) < 1e-12:
+        result = 0.0
     return result
 
 
@@ -98,7 +122,13 @@ def stirling_interpolation(x, y, value):
     dts = generate_array_offset(n // 2)
     f1 = first_interpolation_gauss_form(n, x, y, alpha_index, dts, h, central_differences_table, value)
     f2 = second_interpolation_gauss_form(n, x, y, alpha_index, dts, h, central_differences_table, value)
-    return (f1 + f2) / 2
+
+    result = (f1 + f2) / 2
+
+    # Добавляем проверку на малое значение результата
+    if abs(result) < 1e-12:
+        result = 0.0
+    return result
 
 
 def bessel_interpolation(x, y, value):
@@ -132,4 +162,7 @@ def bessel_interpolation(x, y, value):
             l += 1
             result += current
 
+    # Добавляем проверку на малое значение результата
+    if abs(result) < 1e-12:
+        result = 0.0
     return result
