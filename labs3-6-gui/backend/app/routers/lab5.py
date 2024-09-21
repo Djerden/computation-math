@@ -19,4 +19,4 @@ async def process_data(request_data: RequestModel):
 
     result, graphs = solve_interpolation(x, y, inter_point)
 
-    return ResponseModel(result=result, graphs=graphs)
+    return ResponseModel(result=result, graphs=graphs, interpolation_nodes=[x, y])

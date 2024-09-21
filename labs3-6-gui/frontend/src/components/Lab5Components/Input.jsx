@@ -70,7 +70,7 @@ export default function Input({requestFunction}) {
 
             // Проверка, что в файле есть хотя бы две строки для X и Y
             if (lines.length < 2) {
-                alert("Файл должен содержать хотя бы две строки: одну для X и одну для Y.");
+                alert("The file must contain at least two lines: one for X and one for Y");
                 return;
             }
 
@@ -80,7 +80,7 @@ export default function Input({requestFunction}) {
 
             // Проверяем, что обе строки содержат одинаковое количество значений
             if (xValues.length !== yValues.length) {
-                alert("Строки X и Y должны содержать одинаковое количество значений.");
+                alert("The X and Y lines must contain the same number of values");
                 return;
             }
 
@@ -89,7 +89,7 @@ export default function Input({requestFunction}) {
             const invalidY = yValues.some(value => isNaN(value));
 
             if (invalidX || invalidY) {
-                alert("Некоторые значения в строках X или Y не являются числами.");
+                alert("Some values in the X or Y strings are not numbers");
                 return;
             }
 
@@ -106,7 +106,7 @@ export default function Input({requestFunction}) {
 
         }
         reader.onerror = function () {
-            alert("Ошибка при чтении файла.");
+            alert("Error reading the file");
         };
 
         reader.readAsText(file);
@@ -229,17 +229,17 @@ export default function Input({requestFunction}) {
 
             // Проверка значений a, b и points
             if (isNaN(a) || isNaN(b) || isNaN(points)) {
-                console.error('Значения a, b и количество точек должны быть числами');
+                console.error('The values of a, b and the number of points must be numbers');
                 return;
             }
 
             // Проверка корректности интервала и количества точек
             if (b <= a) {
-                console.error('Значение b должно быть больше a');
+                console.error('The value of b must be greater than a');
                 return;
             }
             if (points <= 1) {
-                console.error('Количество точек должно быть больше 1');
+                console.error('The number of points must be greater than 1');
                 return;
             }
 
@@ -259,6 +259,7 @@ export default function Input({requestFunction}) {
             // Проверка точки интерполяции
             if (interpolationPoint < a || interpolationPoint > b) {
                 console.error('Точка интерполяции должна находиться в пределах интервала');
+                alert('The interpolation point must be within the interval')
                 return;
             }
 
