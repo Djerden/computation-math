@@ -35,9 +35,11 @@ export default function Solution({answer}) {
             <h1 className="text-2xl">Solution</h1>
             <textarea
                 className="px-2 py-1 resize-none h-full rounded w-full text-black"
+                style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}
                 readOnly
                 ref={textareaRef}
-                value={result}>
+                value={result}
+                wrap="off">
             </textarea>
             <button
                 className="bg-white text-black px-4 py-2 rounded hover:bg-neutral-300"

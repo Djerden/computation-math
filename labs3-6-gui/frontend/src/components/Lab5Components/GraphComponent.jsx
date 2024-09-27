@@ -39,7 +39,6 @@ export default function GraphComponent({name, inter_point, interpolation_nodes, 
     useEffect(() => {
         if (calculatorInstanceRef.current) {
 
-
             // Сортировка x и соответствующая перестановка y
             const combined = x.map((value, index) => ({ xValue: value, yValue: y[index] }));
 
