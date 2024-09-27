@@ -15,7 +15,7 @@ def solve(y0, x0, xn, h, eps, func):
 
     if func == "y' = x^2 - 2y":
         function = function1
-    elif func == "y' = y + (1+x) * y^2":
+    elif func == "y' = x + 1 / (1 + y^2)":
         function = function2
     elif func == "y' = 2x - 3y":
         function = function3

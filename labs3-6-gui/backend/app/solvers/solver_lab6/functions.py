@@ -7,10 +7,9 @@ def function1(x, y):
 
 
 def function2(x, y):
-    # return y + sp.cos(x)
-    return y + (1 + x) * y * y
+    return x + 1 / (1 + y**2)
+
 
 
 def function3(x, y):
-    #return 2 * x - 3 * y
-    return  2 * x - 3 * y
+    return 2 * x - 3 * y

@@ -55,6 +55,42 @@ export default function Input({requestFunction}) {
         return true;
     }
 
+    function clearButton() {
+        setInputs({
+            y0: '',
+            x0: '',
+            xn: '',
+            h: '',
+            eps: '',
+            function: "y' = x^2 - 2y"  // возвращаем к дефолтному значению
+        });
+    }
+
+    // Сделать валидацию полей
+    function handleFileChange(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const text = e.target.result;
+            const lines = text.split('\n');
+
+            const newInputs = {...inputs}; // Создаем копию текущего состояния
+
+            lines.forEach(line => {
+                const [key, value] = line.trim().split(/\s+/);
+                // Обновляем только те поля, которые есть в состоянии и не являются 'function'
+                if (key in newInputs && key !== 'function') {
+                    newInputs[key] = value; // Обновляем значение
+                }
+            });
+
+            setInputs(newInputs); // Устанавливаем новое состояние после обработки файла
+        };
+
+        reader.readAsText(file);
+    }
+
     function solveClick() {
 
         const data = {
@@ -138,17 +174,21 @@ export default function Input({requestFunction}) {
                             name="equation"
                             value="y' = x^2 - 2y"
                             checked={inputs.function === "y' = x^2 - 2y"}
-                            onChange={(e) => {changeInputs('function', e.target.value)}}/>
+                            onChange={(e) => {
+                                changeInputs('function', e.target.value)
+                            }}/>
                         <label>y' = x^2 - 2y</label>
                     </p>
                     <p className="space-x-2">
                         <input
                             type="radio"
                             name="equation"
-                            value="y' = y + (1+x) * y^2"
-                            checked={inputs.function === "y' = y + (1+x) * y^2"}
-                            onChange={(e) => {changeInputs('function', e.target.value)}}/>
-                        <label>y' = y + (1+x) * y^2</label>
+                            value="y' = x + 1 / (1 + y^2)"
+                            checked={inputs.function === "y' = x + 1 / (1 + y^2)"}
+                            onChange={(e) => {
+                                changeInputs('function', e.target.value)
+                            }}/>
+                        <label>y' = x + 1 / (1 + y^2)</label>
                     </p>
                     <p className="space-x-2">
                         <input
@@ -156,13 +196,27 @@ export default function Input({requestFunction}) {
                             name="equation"
                             value="y' = 2x - 3y"
                             checked={inputs.function === "y' = 2x - 3y"}
-                            onChange={(e) => {changeInputs('function', e.target.value)}}/>
+                            onChange={(e) => {
+                                changeInputs('function', e.target.value)
+                            }}/>
                         <label>y' = 2x - 3y</label>
                     </p>
+                </div>
+                <div>
+                    <button
+                        className="bg-black px-6 rounded hover:bg-neutral-700 text-white"
+                        onClick={clearButton}
+                    >Clear
+                    </button>
                 </div>
             </div>
             <div>
                 <div className="flex flex-row items-center bg-custom-644e5b p-6 text-white rounded-b">
+                    <input
+                        type="file"
+                        accept=".txt"
+                        onChange={handleFileChange}/>
+
                     <button
                         className="bg-black px-6 w-full rounded hover:bg-neutral-700"
                         onClick={solveClick}
