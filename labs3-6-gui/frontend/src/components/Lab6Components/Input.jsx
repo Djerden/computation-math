@@ -183,12 +183,12 @@ export default function Input({requestFunction}) {
                         <input
                             type="radio"
                             name="equation"
-                            value="y' = x + 1 / (1 + y^2)"
-                            checked={inputs.function === "y' = x + 1 / (1 + y^2)"}
+                            value="y' = x^2 + x"
+                            checked={inputs.function === "y' = x^2 + x"}
                             onChange={(e) => {
                                 changeInputs('function', e.target.value)
                             }}/>
-                        <label>y' = x + 1 / (1 + y^2)</label>
+                        <label>y' = x^2 + x</label>
                     </p>
                     <p className="space-x-2">
                         <input

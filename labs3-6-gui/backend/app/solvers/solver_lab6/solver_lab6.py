@@ -6,6 +6,14 @@ from app.solvers.solver_lab6.functions import *
 
 from app.models.lab6_models import DataForGraphics
 
+def limit_points(x_data, y_data, max_points=1000):
+    if len(x_data) > max_points:
+        indices = np.linspace(0, len(x_data) - 1, max_points, dtype=int)
+        x_data = x_data[indices]
+        y_data = y_data[indices]
+    return x_data, y_data
+
+
 def exact_sol(x_data, y_data, function):
     x_exact = np.linspace(min(x_data), max(x_data), 1000)
     y_exact = exact_solution(function, x_data[0], y_data[0])(x_exact)
@@ -15,7 +23,7 @@ def solve(y0, x0, xn, h, eps, func):
 
     if func == "y' = x^2 - 2y":
         function = function1
-    elif func == "y' = x + 1 / (1 + y^2)":
+    elif func == "y' = x^2 + x":
         function = function2
     elif func == "y' = 2x - 3y":
         function = function3
@@ -39,6 +47,9 @@ def euуer_method(function, y0, x0, xn, h, eps):
     headers = ["X", "Y", "Точное решение"]
     data = list(zip(x_euler, y_euler, y_real_solution))
     result += tabulate(data, headers=headers, tablefmt="grid")
+
+    # Ограничиваем количество точек
+    x_euler, y_euler = limit_points(x_euler, y_euler)
     exact_x, exact_y = exact_sol(x_euler, y_euler, function)
     return result, DataForGraphics(name=name, method_x=x_euler, method_y=y_euler, exact_x=exact_x, exact_y=exact_y)
 

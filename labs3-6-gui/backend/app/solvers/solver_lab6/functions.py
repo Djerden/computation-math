@@ -7,7 +7,7 @@ def function1(x, y):
 
 
 def function2(x, y):
-    return x + 1 / (1 + y**2)
+    return x**2 + x
 
 
 
